@@ -1,14 +1,8 @@
-const http = require('http');
+let http = require('http');
 
-const hostname = '127.0.0.1';
-const port = 3000;
-
-const server = http.createServer((req, res) => {
-  res.statusCode = 200;
-  res.setHeader('Content-Type', 'text/plain');
-  res.end('Hello World');
+let server = http.createServer((request, response) => {
+  response.writeHead( 200, {'Content-Type': 'text/plain'});
+  response.end('Hello World!!');
 });
 
-server.listen(port, hostname, () => {
-  console.log(`Server running at http://${hostname}:${port}/`);
-});
+server.listen(5000, () => console.log("server started on 5000"));
