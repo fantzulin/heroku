@@ -6,6 +6,8 @@
         class="el-menu-demo"
         mode="horizontal"
         @select="handleSelect"
+        text-color="#295ea4"
+        active-text-color="#ffcb4f"
         router="true"
       >
         <el-menu-item index="1" route="/">Home</el-menu-item>
@@ -24,7 +26,11 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  color: #2c3e50;
+  color: #295ea4;
+}
+
+.el-menu.el-menu--horizontal{
+  border-bottom: none;
 }
 </style>
 
