@@ -1,4 +1,7 @@
 module.exports = {
+    publicPath: './',
+    outputDir: 'dist',
+    assetsDir: 'assets',
     pwa: {
         name: 'fantzulin',
         iconPaths: {
