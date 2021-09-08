@@ -6,8 +6,8 @@
         class="el-menu-demo"
         mode="horizontal"
         @select="handleSelect"
-        text-color="#295ea4"
-        active-text-color="#ffcb4f"
+        text-color="#000000"
+        active-text-color="#295ea4"
         router="true"
       >
         <el-menu-item index="1" route="/">Home</el-menu-item>
@@ -26,7 +26,7 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  color: #295ea4;
+  color: #000000;
 }
 
 .el-menu.el-menu--horizontal{

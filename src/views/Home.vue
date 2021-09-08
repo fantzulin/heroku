@@ -10,7 +10,7 @@
     <el-col xs="24" :md="16">
       <div class="grid-content">
         <h5>Skills</h5>
-        <ul>
+        <ul class="ul-skill">
           <li>HTML5</li>
           <li>CSS3</li>
           <li>JavaScript</li>
@@ -30,8 +30,22 @@
   </el-row>
 </template>
 <style lang="scss">
-  ul{
+  h3, h5{
+    color: #295ea4;
+  }
+  ul.ul-skill{
+    margin: 0 auto;
+    padding: 0;
+    width: 100px;
     list-style: none;
+    text-align: initial;
+    li::before{
+      margin-left: -16px;
+      width: 16px;
+      display: inline-block;
+      content: "\2022";
+      color: #295ea4;
+    }
   }
 </style>
 <script>
