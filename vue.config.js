@@ -1,16 +1,16 @@
 module.exports = {
-    publicPath: './',
+    publicPath: '/',
     outputDir: 'dist',
     assetsDir: 'assets',
     pwa: {
         name: 'fantzulin',
         iconPaths: {
-            faviconSVG: 'favicon.ico',
-            favicon32: 'favicon.ico',
-            favicon16: 'favicon.ico',
-            appleTouchIcon: 'favicon.ico',
-            maskIcon: 'favicon.ico',
-            msTileImage: 'favicon.ico'
+            faviconSVG: 'img/fasticon.ico',
+            favicon32: 'img/fasticon.ico',
+            favicon16: 'img/fasticon.ico',
+            appleTouchIcon: 'img/fasticon.ico',
+            maskIcon: 'img/fasticon.ico',
+            msTileImage: 'img/fasticon.ico'
         }
     }
 }
