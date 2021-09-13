@@ -5,12 +5,12 @@ module.exports = {
     pwa: {
         name: 'fantzulin',
         iconPaths: {
-            faviconSVG: 'img/fasticon.ico',
-            favicon32: 'img/fasticon.ico',
-            favicon16: 'img/fasticon.ico',
-            appleTouchIcon: 'img/fasticon.ico',
-            maskIcon: 'img/fasticon.ico',
-            msTileImage: 'img/fasticon.ico'
+            faviconSVG: 'img/favicon.ico',
+            favicon32: 'img/favicon.ico',
+            favicon16: 'img/favicon.ico',
+            appleTouchIcon: 'img/favicon.ico',
+            maskIcon: 'img/favicon.ico',
+            msTileImage: 'img/favicon.ico'
         }
     }
 }
