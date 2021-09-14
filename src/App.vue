@@ -11,7 +11,7 @@
         router="true"
       >
         <el-menu-item index="1" route="/">Home</el-menu-item>
-        <el-menu-item index="2" route="/about">About</el-menu-item>
+        <el-menu-item index="2" route="/weather">Weather</el-menu-item>
       </el-menu>
     </el-header>
     <el-main>

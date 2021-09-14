@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/fantzulin/heroku#readme",
   "dependencies": {
+    "axios": "^0.21.4",
     "core-js": "^3.6.5",
     "element-plus": "^1.1.0-beta.9",
     "express": "^4.17.1",
@@ -26,6 +27,7 @@
     "npm": "^6.14.15",
     "sass": "^1.38.2",
     "vue": "^3.0.0",
+    "vue-axios": "^3.3.6",
     "vue-loader-v16": "^16.0.0-beta.5.4",
     "vue-router": "^4.0.0-0",
     "vuex": "^4.0.0-0"
