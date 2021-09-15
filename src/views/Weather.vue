@@ -1,14 +1,34 @@
 <template>
   <div>
-    <h1></h1>
-    <span>Sep 15, 07:52am</span>
-    <h2 id="name"></h2>
-    <h1 id="temp"></h1>
-    <span id="weather">{{ weather_msg }}</span>
+    <el-card class="box-card" shadow="hover">
+      <span>{{ currentDateTime() }}</span>
+      <h2 id="name"></h2>
+      <h1 id="temp"></h1>
+      <span id="weather">{{ weather_msg }}</span>
+    </el-card>
   </div>
 </template>
 
+<style scoped>
+  .box-card{
+    width: 300px;
+  }
+</style>
+
 <script>
+export default {
+  methods: {
+    currentDateTime(){
+      const current = new Date();
+      const date = `${current.getMonth()+1}/${current.getDate()}`;
+      const time = current.getHours() + ":" + current.getMinutes();
+      const currentDate = date +', '+ time;
+
+      return currentDate
+    }
+  },
+}
+
 const axios = require('axios');
 axios.get('https://api.openweathermap.org/data/2.5/weather?q=Taipei&units=metric&appid=c554d60a090a1e44b92ef809a1906523&lang=zh_tw')
   .then(function (response) {
