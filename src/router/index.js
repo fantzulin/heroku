@@ -14,6 +14,11 @@ const routes = [
     name: "weather",
     component: getView("Weather"),
   },
+  {
+    path: "/CharacterCard",
+    name: "CharacterCard",
+    component: getView("CharacterCard"),
+  }
 ];
 
 const router = createRouter({
