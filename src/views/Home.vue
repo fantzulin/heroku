@@ -12,9 +12,11 @@
         <h5>Skills</h5>
         <ul class="ul-skill">
           <li>HTML5</li>
-          <li>CSS3</li>
+          <li>CSS3, Sass(SCSS)</li>
           <li>JavaScript</li>
+          <li>Vue.js</li>
           <li>Git</li>
+          <li>SEO</li>
         </ul>
         <h5>Experience</h5>
         <p>PAPAGO! 2017 - present</p>
@@ -36,7 +38,7 @@
   ul.ul-skill{
     margin: 0 auto;
     padding: 0;
-    width: 100px;
+    width: 130px;
     list-style: none;
     text-align: initial;
     li::before{

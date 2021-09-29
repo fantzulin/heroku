@@ -36,7 +36,7 @@ export default {
     axios.get('https://api.openweathermap.org/data/2.5/weather?q=Taipei&units=metric&appid=c554d60a090a1e44b92ef809a1906523&lang=zh_tw')
       .then(function (response) {
         // handle success
-        let temp_now = response.data.main.temp;
+        let temp_now = Math.round(response.data.main.temp);
         let city_name = response.data.name;
         let weather_state = response.data.weather[0].main;
         let weather_msg = {
