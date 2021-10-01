@@ -2,7 +2,6 @@
   <el-container>
     <el-header>
       <el-menu
-        default-active="1"
         class="el-menu-demo"
         mode="horizontal"
         @select="handleSelect"
