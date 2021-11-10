@@ -2,7 +2,7 @@
   <el-row :gutter="20">
     <el-col xs="24" :md="8">
       <div class="grid-content">
-        <img alt="Vue logo" src="../assets/logo.png" />
+        <img alt="Vue logo" src="../assets/avatar.jpg" style="width: 100%;" />
         <h3>FAN TZU-LIN</h3>
         <h5>Front-End Developer</h5>
       </div>
@@ -51,5 +51,4 @@
   }
 </style>
 <script>
-
 </script>

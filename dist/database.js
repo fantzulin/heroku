@@ -9,20 +9,20 @@ let db = new sqlite3.Database(DBSOURCE, (err) => {
       throw err
     }else{
         console.log('Connected to the SQLite database.')
-        db.run(`CREATE TABLE user (
+        db.run(`CREATE TABLE food (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
-            time text, 
-            food text UNIQUE, 
-            CONSTRAINT food_unique UNIQUE (food)
+            type TEXT, 
+            name TEXT, 
             )`,
         (err) => {
             if (err) {
                 // Table already created
             }else{
                 // Table just created, creating some rows
-                var insert = 'INSERT INTO user (time, food) VALUES (?,?)'
-                db.run(insert, ["dinner","milk"])
-                db.run(insert, ["dinner","pizza"])
+                var insert = 'INSERT INTO food (type, name) VALUES (?,?)'
+                db.run(insert, ["breakfast","鹽味奶油麵包"])
+                db.run(insert, ["lunch","玉米蛋蔥抓餅"])
+                db.run(insert, ["dinner","韓式飯"])
             }
         });  
     }
