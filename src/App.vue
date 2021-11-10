@@ -2,6 +2,7 @@
   <el-container>
     <el-header>
       <el-menu
+        default-active="1"
         class="el-menu-demo"
         id="header_menu"
         mode="horizontal"
