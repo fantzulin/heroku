@@ -3,7 +3,6 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "postinstall": "NODE_ENV=development && npm run client-install && npm run client-build && NODE_ENV=production",
     "serve": "vue-cli-service serve",
     "start": "node dist/app.js",
     "build": "vue-cli-service build",
@@ -20,31 +19,20 @@
   },
   "homepage": "https://github.com/fantzulin/heroku#readme",
   "dependencies": {
-    "@vue/cli": "^4.5.13",
     "axios": "^0.21.4",
-    "body-parser": "^1.19.0",
     "core-js": "^3.6.5",
-    "cors": "^2.8.5",
     "element-plus": "^1.1.0-beta.9",
     "express": "^4.17.1",
-    "fibers": "^3.1.0",
-    "glob-parent": "^6.0.2",
-    "merge": "^2.1.1",
-    "mysql": "^2.18.1",
-    "mysql2": "^2.3.0",
-    "node-sass": "^6.0.1",
+    "glob-parent": "^6.0.1",
     "npm": "^6.14.15",
     "pexels": "^1.3.0",
-    "postcss": "^8.3.8",
-    "sass": "^1.43.4",
-    "sass-loader": "^10.2.0",
+    "sass": "^1.38.2",
+    "sqlite3": "^5.0.2",
     "vue": "^3.0.0",
     "vue-axios": "^3.3.6",
     "vue-loader-v16": "^16.0.0-beta.5.4",
     "vue-router": "^4.0.0-0",
-    "vue-template-compiler": "^2.6.14",
-    "vuex": "^4.0.0-0",
-    "webpack": "^4.46.0"
+    "vuex": "^4.0.0-0"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.5.0",
@@ -58,6 +46,9 @@
     "eslint": "^6.7.2",
     "eslint-plugin-prettier": "^3.3.1",
     "eslint-plugin-vue": "^7.0.0",
-    "prettier": "^2.2.1"
+    "prettier": "^2.2.1",
+    "sass-loader": "^8.0.2",
+    "webpack": "^4.0.0",
+    "webpack-dev-server": "^4.4.0"
   }
 }
