@@ -65,7 +65,6 @@
   color: #295ea4;
 }
 </style>
-
 <script>
 const resizeObserver = new ResizeObserver(entries => {
   for (let entry of entries) {

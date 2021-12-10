@@ -1,6 +1,7 @@
 import { createStore } from "vuex";
 import { initializeApp } from "firebase/app";
 import { getDatabase, ref, child, get } from "firebase/database";
+import { getAnalytics, logEvent } from "firebase/analytics";
 
 const firebaseConfig = {
   apiKey: "AIzaSyB900FNxKYIwpFvlFcs4SqZro8bHPiqxvs",
@@ -10,14 +11,16 @@ const firebaseConfig = {
   storageBucket: "fantzulin-e590c.appspot.com",
   messagingSenderId: "937701848678",
   appId: "1:937701848678:web:d30e705555247cb5b11fa7",
-  measurementId: "${config.measurementId}"
+  measurementId: "G-C1JLS7P3PL"
 };
 
 const app = initializeApp(firebaseConfig);
+const analytics = getAnalytics();
+logEvent(analytics, 'notification_received');
 
 function writeUserData() {
   const dbRef = ref(getDatabase(app));
-  get(child(dbRef, '/food')).then((snapshot) => {
+  get(child(dbRef, "/food")).then((snapshot) => {
     if (snapshot.exists()) {
       console.log(snapshot.val());
     } else {
