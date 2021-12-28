@@ -18,6 +18,11 @@ const routes = [
     path: "/CharacterCard",
     name: "CharacterCard",
     component: getView("CharacterCard"),
+  },
+  {
+    path: "/toDoList",
+    name: "toDoList",
+    component: getView("toDoList"),
   }
 ];
 

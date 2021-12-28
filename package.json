@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/fantzulin/heroku#readme",
   "dependencies": {
+    "@element-plus/icons-vue": "^0.2.4",
     "ansi-html-community": "0.0.8",
     "axios": "^0.21.4",
     "core-js": "^3.6.5",

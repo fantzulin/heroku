@@ -2,7 +2,7 @@
   <el-container>
     <el-header>
       <el-menu
-        default-active="1"
+        default-active="/weather"
         class="el-menu-demo"
         id="header_menu"
         mode="horizontal"
@@ -14,6 +14,7 @@
         <el-menu-item index="1" route="/">Home</el-menu-item>
         <el-menu-item index="2" route="/weather">Weather</el-menu-item>
         <el-menu-item index="3" route="/CharacterCard">Character Card</el-menu-item>
+        <el-menu-item index="4" route="/toDoList">To Do List</el-menu-item>
       </el-menu>
       <div id="mobile_menu" style="display: none;">
         <el-dropdown trigger="click">
@@ -30,6 +31,9 @@
               </el-dropdown-item>
               <el-dropdown-item>
                 <el-link href="/CharacterCard" :underline="false">Character Card</el-link>
+              </el-dropdown-item>
+              <el-dropdown-item>
+                <el-link href="/toDoList" :underline="false">To Do List</el-link>
               </el-dropdown-item>
             </el-dropdown-menu>
           </template>
@@ -66,6 +70,17 @@
 }
 </style>
 <script>
+import {useRouter, useRoute} from 'vue-router'
+
+export default {
+	setup(){
+		const router = useRouter();
+		const route = useRoute;
+    console.log("router:", router);
+    console.log("route:", route);
+	}
+}
+
 const resizeObserver = new ResizeObserver(entries => {
   for (let entry of entries) {
     const browser_width = entry.contentRect.width;
