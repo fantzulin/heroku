@@ -2,7 +2,7 @@
   <el-container>
     <el-header>
       <el-menu
-        default-active="/weather"
+        :default-active = activeIndex
         class="el-menu-demo"
         id="header_menu"
         mode="horizontal"
@@ -11,10 +11,10 @@
         active-text-color="#295ea4"
         router="true"
       >
-        <el-menu-item index="1" route="/">Home</el-menu-item>
-        <el-menu-item index="2" route="/weather">Weather</el-menu-item>
-        <el-menu-item index="3" route="/CharacterCard">Character Card</el-menu-item>
-        <el-menu-item index="4" route="/toDoList">To Do List</el-menu-item>
+        <el-menu-item index="home" route="/">Home</el-menu-item>
+        <el-menu-item index="weather" route="/weather">Weather</el-menu-item>
+        <el-menu-item index="CharacterCard" route="/CharacterCard">Character Card</el-menu-item>
+        <el-menu-item index="toDoList" route="/toDoList">To Do List</el-menu-item>
       </el-menu>
       <div id="mobile_menu" style="display: none;">
         <el-dropdown trigger="click">
@@ -70,15 +70,21 @@
 }
 </style>
 <script>
-import {useRouter, useRoute} from 'vue-router'
-
 export default {
-	setup(){
-		const router = useRouter();
-		const route = useRoute;
-    console.log("router:", router);
-    console.log("route:", route);
-	}
+  data(){
+    return {
+       activeIndex: ''
+    }
+  },
+
+  mounted (){
+    let router_path = window.location.href.split('/')[3];
+    if(router_path == ''){
+      this.activeIndex = "home";
+    } else {
+      this.activeIndex = router_path;
+    }
+  }
 }
 
 const resizeObserver = new ResizeObserver(entries => {
