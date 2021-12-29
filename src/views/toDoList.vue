@@ -18,6 +18,14 @@
                 <el-icon><Delete /></el-icon>
             </el-button>
         </div>
+
+        <button v-if='!authorized' v-on:click="handleAuthClick">Sign In</button>
+        <button v-if='authorized' v-on:click="handleSignoutClick">Sign Out</button>
+        <button v-if='authorized' v-on:click="getData">Get Data</button>
+        <div class="item-container" v-if="authorized && items">
+            <pre v-html="items"></pre>
+        </div>
+        <pre id="content" style="white-space: pre-wrap;"></pre>
     </div>
 </template>
 
@@ -37,12 +45,25 @@
 
 <script>
 import { Delete } from "@element-plus/icons-vue";
+const CLIENT_ID = '937701848678-7sns7fb70f3v81b8c6c4u4mepf1i3t4k.apps.googleusercontent.com';
+const API_KEY = 'AIzaSyB-76fvVrkjsxSJ4qmLVbMLDheQoPRSCvU';
+const DISCOVERY_DOCS = ['https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest'];
+const SCOPES = 'https://www.googleapis.com/auth/calendar.readonly';
+
 export default {
     data() {
         return {
             todos: ['學習', '睡覺', '打東東'],
             inputValue: '',
+            items: undefined,
+            api: undefined,
+            authorized: false
         }
+    },
+
+    created() {
+        this.api = gapi;
+        this.handleClientLoad();
     },
 
     components: {
@@ -50,10 +71,80 @@ export default {
     },
 
     methods: {
+        handleClientLoad() {
+            this.api.load('client:auth2', this.initClient);
+        },
+
+        initClient() {
+            let vm = this;
+
+            vm.api.client.init({
+                apiKey: API_KEY,
+                clientId: CLIENT_ID,
+                discoveryDocs: DISCOVERY_DOCS,
+                scope: SCOPES
+            }).then(_ => {
+                // Listen for sign-in state changes.
+                vm.api.auth2.getAuthInstance().isSignedIn.listen(vm.authorized);
+            });
+        },
+
+        handleAuthClick(event) {
+            Promise.resolve(this.api.auth2.getAuthInstance().signIn())
+            .then(_ => {
+                this.authorized = true;
+            });
+        },
+
+        handleSignoutClick(event) {
+            Promise.resolve(this.api.auth2.getAuthInstance().signOut())
+            .then(_ => {
+                this.authorized = false;
+            });
+        },
+
+        getData() {
+            let vm = this;
+
+            vm.api.client.calendar.events.list({
+                'calendarId': 'primary',
+                'timeMin': (new Date()).toISOString(),
+                'showDeleted': false,
+                'singleEvents': true,
+                'maxResults': 10,
+                'orderBy': 'startTime'
+            }).then(response => {
+                vm.items = this.syntaxHighlight(response.result.items);
+                console.log(vm.items);
+            });
+        },
+
+        syntaxHighlight(json) {
+            if (typeof json != 'string') {
+                json = JSON.stringify(json, undefined, 2);
+            }
+            json = json.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+            return json.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, match => {
+                var cls = 'number';
+                if (/^"/.test(match)) {
+                    if (/:$/.test(match)) {
+                        cls = 'key';
+                    } else {
+                        cls = 'string';
+                    }
+                } else if (/true|false/.test(match)) {
+                    cls = 'boolean';
+                } else if (/null/.test(match)) {
+                    cls = 'null';
+                }
+                return '<span class="' + cls + '">' + match + '</span>';
+            });
+        },
+
         addTodo(){
-        this.todos.push(this.inputValue);
-        console.log(this.todos);
-        this.inputValue = '';
+            this.todos.push(this.inputValue);
+            console.log(this.todos);
+            this.inputValue = '';
         },
 
         removeTodo(index){
