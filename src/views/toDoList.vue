@@ -50,7 +50,7 @@
 <script>
 import { Delete } from "@element-plus/icons-vue";
 import { initializeApp } from "firebase/app";
-import { getDatabase, ref, child, get, set } from "firebase/database";
+import { getDatabase, ref, child, get, set, remove } from "firebase/database";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 
 
@@ -82,14 +82,14 @@ signInWithEmailAndPassword(auth, "fanchi0917@gmail.com", "dontbirdyou123")
 
 export default {
     data() {
-        let firebase_data = "";
         const dbRef = ref(getDatabase(app));
         get(child(dbRef, "/food")).then((snapshot) => {
             if (snapshot.exists()) {
-                for (let i = 1; i < snapshot.val().length; i++) {
-                    firebase_data = snapshot.val()[i];
-                    this.todos.push(firebase_data);
-                }
+                console.log("snapshot", snapshot);
+                console.log("snapshot.key()", Object.keys(snapshot.val()));
+                console.log("snapshot.val()", snapshot.val());
+                let firebase_data = snapshot.val();
+                this.todos = firebase_data;
             } else {
                 console.log("No data available");
             }
@@ -119,11 +119,27 @@ export default {
         },
 
         removeTodo(index){
-            this.todos.splice(index, 1); // 使用陣列方法splice(指定的index開始，刪除一筆)，依照抓到的 index 刪除
+            let set_num = index;
+            this.todos.splice(index, 1);
+            const database = getDatabase(app);
+            //remove(ref(database, 'food/' + set_num));
+
+            console.log("this.todos", this.todos);
+
+            let keys = Object.keys(this.todos)
+            console.log("keys", keys);
+
+            for (let i = 0; i < keys.length; i++) {
+                console.log(i, keys[i])
+                console.log(this.todos[i])
+                //set(ref(database, 'food/' + keys[i]), this.todos[i]);
+            }
         },
 
         clearAll(){
             this.todos = []; // 把儲存陣列的 todos 用空陣列賦值清空
+            const database = getDatabase(app);
+            set(ref(database, '/food'),"");
         },
 
         updateTodo(){
