@@ -4,7 +4,7 @@
         <el-input v-model="inputValue" placeholder="輸入一項待辦事項" v-on:keyup.enter="addTodo()" />
         <el-divider></el-divider>
         <ul>
-            <li v-for="(item, index) in todos" :key="item">
+            <li v-for="(item, index) in todos" v-bind:key="index">
                 <span>{{item}}</span>
                 <button type="button" v-on:click="removeTodo(index)">
                     <i class="fas fa-trash-alt"></i>
@@ -50,7 +50,7 @@
 <script>
 import { Delete } from "@element-plus/icons-vue";
 import { initializeApp } from "firebase/app";
-import { getDatabase, ref, child, get, set, remove } from "firebase/database";
+import { getDatabase, ref, child, get, set, remove, update, push } from "firebase/database";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 
 
@@ -85,11 +85,11 @@ export default {
         const dbRef = ref(getDatabase(app));
         get(child(dbRef, "/food")).then((snapshot) => {
             if (snapshot.exists()) {
-                console.log("snapshot", snapshot);
-                console.log("snapshot.key()", Object.keys(snapshot.val()));
-                console.log("snapshot.val()", snapshot.val());
-                let firebase_data = snapshot.val();
-                this.todos = firebase_data;
+                for(var key in snapshot.val()) {
+                    this.todos.push(snapshot.val()[key]);
+                }
+                let firebase_key = Object.keys(snapshot.val());
+                this.todokeys = firebase_key;
             } else {
                 console.log("No data available");
             }
@@ -99,6 +99,7 @@ export default {
         
         return {
             todos: [],
+            todokeys: [],
             inputValue: '',
         }
     },
@@ -109,31 +110,21 @@ export default {
 
     methods: {
         addTodo(){
-            console.log(this.todos.length);
-            let set_num = this.todos.length + 1;
             let inputValue = this.inputValue;
             this.todos.push(inputValue);
             const database = getDatabase(app);
-            set(ref(database, 'food/' + set_num), inputValue);
+            const newPostKey = push(child(ref(database), '/food')).key;
+            this.todokeys.push(newPostKey);
+            set(ref(database, 'food/' + newPostKey), inputValue);
             this.inputValue = '';
         },
 
         removeTodo(index){
-            let set_num = index;
+            let firebase_key = this.todokeys[index];
             this.todos.splice(index, 1);
+            this.todokeys.splice(index, 1);
             const database = getDatabase(app);
-            //remove(ref(database, 'food/' + set_num));
-
-            console.log("this.todos", this.todos);
-
-            let keys = Object.keys(this.todos)
-            console.log("keys", keys);
-
-            for (let i = 0; i < keys.length; i++) {
-                console.log(i, keys[i])
-                console.log(this.todos[i])
-                //set(ref(database, 'food/' + keys[i]), this.todos[i]);
-            }
+            remove(ref(database, 'food/' + firebase_key));
         },
 
         clearAll(){
