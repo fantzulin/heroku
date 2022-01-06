@@ -4,9 +4,13 @@
         <el-input v-model="inputValue" placeholder="輸入一項待辦事項" v-on:keyup.enter="addTodo()" />
         <el-divider></el-divider>
         <ul>
-            <li v-for="(item, index) in todos" v-bind:key="index">
-                <span>{{item}}</span>
-                <button type="button" v-on:click="removeTodo(index)">
+            <li v-for="(todo, key, index) in todos" v-bind:key="index">
+                <span v-if="!todo.isEdit">{{todo.text}}</span>
+                <el-input v-model="todo.text" v-if="todo.isEdit" v-on:keyup.enter="updateTodo($event, todo)"/>
+                <button type="button" v-on:click="editTodo(todo)">
+                    <i class="fas fa-edit"></i>
+                </button>
+                <button type="button" v-bind:id="index" v-on:click="removeTodo(todo)">
                     <i class="fas fa-trash-alt"></i>
                 </button>
             </li>
@@ -15,7 +19,7 @@
         <div v-if="todos.length !=0">
             Total : {{todos.length}} todo
             <el-button v-on:click="clearAll" type="danger">
-                <el-icon><Delete /></el-icon>
+                <i class="fas fa-trash-alt"></i>
             </el-button>
         </div>
         <div class="text-left">
@@ -32,6 +36,7 @@
     li{
         margin-bottom: 5px;
         list-style: none;
+        display: flex;
         span{
             margin-right: 5px;
         }
@@ -48,12 +53,10 @@
 </style>
 
 <script>
-import { Delete } from "@element-plus/icons-vue";
 import { initializeApp } from "firebase/app";
 import { getDatabase, ref, child, get, set, remove, update, push } from "firebase/database";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
-
-
+// import EditMyTodo from "../components/EditMyTodo.vue";
 
 const firebaseConfig = {
   apiKey: "AIzaSyB900FNxKYIwpFvlFcs4SqZro8bHPiqxvs",
@@ -67,18 +70,14 @@ const firebaseConfig = {
 };
 
 const app = initializeApp(firebaseConfig);
-
 const auth = getAuth();
-signInWithEmailAndPassword(auth, "fanchi0917@gmail.com", "dontbirdyou123")
-  .then((userCredential) => {
-    // Signed in 
+
+signInWithEmailAndPassword(auth, "fanchi0917@gmail.com", "dby123").then((userCredential) => {
     const user = userCredential.user;
-    // ...
-  })
-  .catch((error) => {
+}).catch((error) => {
     const errorCode = error.code;
     const errorMessage = error.message;
-  });
+});
 
 export default {
     data() {
@@ -88,8 +87,6 @@ export default {
                 for(var key in snapshot.val()) {
                     this.todos.push(snapshot.val()[key]);
                 }
-                let firebase_key = Object.keys(snapshot.val());
-                this.todokeys = firebase_key;
             } else {
                 console.log("No data available");
             }
@@ -99,32 +96,42 @@ export default {
         
         return {
             todos: [],
-            todokeys: [],
             inputValue: '',
+            editValue:'',
         }
     },
 
     components: {
-        Delete,
+        // EditMyTodo,
     },
 
     methods: {
         addTodo(){
             let inputValue = this.inputValue;
+            if(!inputValue){
+                return
+            }
             this.todos.push(inputValue);
             const database = getDatabase(app);
             const newPostKey = push(child(ref(database), '/food')).key;
-            this.todokeys.push(newPostKey);
-            set(ref(database, 'food/' + newPostKey), inputValue);
+            let todoData = {
+                "uuid": newPostKey,
+                "text": inputValue,
+                "isEdit": false
+            }
+            set(ref(database, 'food/' + newPostKey), todoData);
             this.inputValue = '';
         },
 
-        removeTodo(index){
-            let firebase_key = this.todokeys[index];
+        removeTodo(todo){
+            let firebase_key = todo.uuid;
             this.todos.splice(index, 1);
-            this.todokeys.splice(index, 1);
             const database = getDatabase(app);
             remove(ref(database, 'food/' + firebase_key));
+        },
+
+        editTodo(todo){
+            todo.isEdit = true;
         },
 
         clearAll(){
@@ -133,14 +140,19 @@ export default {
             set(ref(database, '/food'),"");
         },
 
-        updateTodo(){
-            let food = "測試"
-            this.todos.push(food3);
+        updateTodo($event, todo){
+            if($event.target.value){
+                todo.text = $event.target.value;
+            }
+            todo.isEdit = !todo.isEdit;
+            let newPostKey = todo.uuid;
+            let todoData = {
+                "uuid": todo.uuid,
+                "text": todo.text,
+                "isEdit": todo.isEdit
+            }
             const database = getDatabase(app);
-
-            set(ref(database, '/food'), {
-                '1': '測試1'
-            });
+            update(ref(database, 'food/' + newPostKey), todoData);   
         }
     },
 }

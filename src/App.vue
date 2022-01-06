@@ -14,7 +14,7 @@
         <el-menu-item index="home" route="/">Home</el-menu-item>
         <el-menu-item index="weather" route="/weather">Weather</el-menu-item>
         <el-menu-item index="CharacterCard" route="/CharacterCard">Character Card</el-menu-item>
-        <el-menu-item index="toDoList" route="/toDoList">To Do List</el-menu-item>
+        <el-menu-item index="TodoList" route="/TodoList">To Do List</el-menu-item>
       </el-menu>
       <div id="mobile_menu" style="display: none;">
         <el-dropdown trigger="click">
@@ -33,7 +33,7 @@
                 <el-link href="/CharacterCard" :underline="false">Character Card</el-link>
               </el-dropdown-item>
               <el-dropdown-item>
-                <el-link href="/toDoList" :underline="false">To Do List</el-link>
+                <el-link href="/TodoList" :underline="false">To Do List</el-link>
               </el-dropdown-item>
             </el-dropdown-menu>
           </template>
