@@ -56,7 +56,6 @@
 import { initializeApp } from "firebase/app";
 import { getDatabase, ref, child, get, set, remove, update, push } from "firebase/database";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
-// import EditMyTodo from "../components/EditMyTodo.vue";
 
 const firebaseConfig = {
   apiKey: "AIzaSyB900FNxKYIwpFvlFcs4SqZro8bHPiqxvs",
@@ -102,7 +101,6 @@ export default {
     },
 
     components: {
-        // EditMyTodo,
     },
 
     methods: {
