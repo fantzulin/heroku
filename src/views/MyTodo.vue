@@ -24,7 +24,7 @@
         </div>
         <div class="text-left">
             <p>Vue.js - 使用 v-model 指令取得 input 的內容，使用 v-on:keyup.ente 事件執行 function。</p>
-            <p>Firebase - 使用 <el-link type="primary" href="https://firebase.google.com/" target="_blank" rel="nofollow">Firebase</el-link> 的 Realtime Database 來即時讀寫資料。</p>
+            <p>簡易資料庫 - 使用 <el-link type="primary" href="https://firebase.google.com/" target="_blank" rel="nofollow">Firebase</el-link> 的 Realtime Database 來即時讀寫資料。</p>
         </div>
     </div>
 </template>
