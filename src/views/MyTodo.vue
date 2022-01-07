@@ -7,10 +7,10 @@
             <li v-for="(todo, key, index) in todos" v-bind:key="index">
                 <span v-if="!todo.isEdit">{{todo.text}}</span>
                 <el-input v-model="todo.text" v-if="todo.isEdit" v-on:keyup.enter="updateTodo($event, todo)"/>
-                <button type="button" v-on:click="editTodo(todo)">
+                <button type="button" v-if="!todo.isEdit" v-on:click="editTodo(todo)">
                     <i class="fas fa-edit"></i>
                 </button>
-                <button type="button" v-bind:id="index" v-on:click="removeTodo(todo)">
+                <button type="button" v-if="!todo.isEdit" v-bind:id="index" v-on:click="removeTodo(todo, index)">
                     <i class="fas fa-trash-alt"></i>
                 </button>
             </li>
@@ -33,17 +33,20 @@
 .div-box{
     margin: 0 auto;
     width: 300px;
-    li{
-        margin-bottom: 5px;
-        list-style: none;
-        display: flex;
-        span{
-            margin-right: 5px;
-        }
-        button{
-            background-color: transparent;
-            border: none;
-            cursor: pointer;
+    ul{
+        padding: 0;
+        li{
+            margin-bottom: 5px;
+            list-style: none;
+            display: flex;
+            span{
+                margin-right: auto;
+            }
+            button{
+                background-color: transparent;
+                border: none;
+                cursor: pointer;
+            }
         }
     }
     .text-left{
@@ -109,7 +112,6 @@ export default {
             if(!inputValue){
                 return
             }
-            this.todos.push(inputValue);
             const database = getDatabase(app);
             const newPostKey = push(child(ref(database), '/food')).key;
             let todoData = {
@@ -117,11 +119,12 @@ export default {
                 "text": inputValue,
                 "isEdit": false
             }
+            this.todos.push(todoData);
             set(ref(database, 'food/' + newPostKey), todoData);
             this.inputValue = '';
         },
 
-        removeTodo(todo){
+        removeTodo(todo, index){
             let firebase_key = todo.uuid;
             this.todos.splice(index, 1);
             const database = getDatabase(app);
