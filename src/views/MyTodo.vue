@@ -76,9 +76,11 @@ const auth = getAuth();
 
 signInWithEmailAndPassword(auth, "fanchi0917@gmail.com", "dby123").then((userCredential) => {
     const user = userCredential.user;
+    console.log(`user: ${user}`);
 }).catch((error) => {
     const errorCode = error.code;
     const errorMessage = error.message;
+    console.log(`error: ${errorCode, errorMessage}`);
 });
 
 export default {

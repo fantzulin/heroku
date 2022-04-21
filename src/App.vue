@@ -11,8 +11,9 @@
         active-text-color="#295ea4"
         router="true"
       >
-        <el-menu-item index="home" route="/">Home</el-menu-item>
-        <el-menu-item index="weather" route="/weather">Crypto Price</el-menu-item>
+        <el-menu-item index="Home" route="/">Home</el-menu-item>
+        <el-menu-item index="Crypto" route="/Crypto">Crypto Price</el-menu-item>
+        <el-menu-item index="Calculator" route="/Calculator">Calculator</el-menu-item>
         <el-menu-item index="CharacterCard" route="/CharacterCard">Character Card</el-menu-item>
         <el-menu-item index="MyTodo" route="/MyTodo">To Do List</el-menu-item>
       </el-menu>
@@ -27,7 +28,10 @@
                 <el-link href="/" :underline="false">Home</el-link>
               </el-dropdown-item>
               <el-dropdown-item>
-                <el-link href="/weather" :underline="false">Crypto Price</el-link>
+                <el-link href="/Crypto" :underline="false">Crypto Price</el-link>
+              </el-dropdown-item>
+              <el-dropdown-item>
+                <el-link href="/Calculator" :underline="false">Calculator</el-link>
               </el-dropdown-item>
               <el-dropdown-item>
                 <el-link href="/CharacterCard" :underline="false">Character Card</el-link>

@@ -1,3 +1,10 @@
+const NodePolyfillPlugin = require('node-polyfill-webpack-plugin');
+
+configureWebpack: (config) => {
+    const plugin = [];
+    plugin.push(new NodePolyfillPlugin());
+}
+
 module.exports = {
     publicPath: '/',
     outputDir: 'dist',

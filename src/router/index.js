@@ -10,9 +10,14 @@ const routes = [
     component: getView("Home"),
   },
   {
-    path: "/weather",
-    name: "weather",
-    component: getView("Weather"),
+    path: "/calculator",
+    name: "calculator",
+    component: getView("Calculator"),
+  },
+  {
+    path: "/crypto",
+    name: "crypto",
+    component: getView("Crypto"),
   },
   {
     path: "/CharacterCard",

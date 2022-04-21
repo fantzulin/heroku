@@ -5,11 +5,15 @@
         <template #default="scope">
           <div class="d-flex align-items-center">
             <el-image :src="scope.row.imgsrc"/>
-            <span>{{ scope.row.name }}</span>
+            <span style="margin-left: 5px;">{{ scope.row.name }}</span>
           </div>
         </template>
       </el-table-column>
-      <el-table-column prop="current_price" label="Price"/>
+      <el-table-column label="Price">
+        <template #default="scope">
+          <span>${{ scope.row.current_price }} TWD</span>
+        </template>
+      </el-table-column>
     </el-table>
     <div class="text-left">
       <p>API - 使用 <el-link type="primary" href="https://www.coingecko.com/en/api" target="_blank" rel="nofollow">CoinGecko</el-link> 的 API 取得加幣貨幣的幣價資訊。</p>
@@ -33,32 +37,30 @@
 </style>
 
 <script>
-  const CoinGecko = require('coingecko-api');
-  const CoinGeckoClient = new CoinGecko();
-  let coins = {};
+
 
 export default {
   data() {
+    
     return {
       coin_list: [],
     }
   },
-  async created() {
-    let markets = await CoinGeckoClient.coins.markets({
-      vs_currency: "twd",
-      order: CoinGecko.ORDER.MARKET_CAP_DESC,
-      per_page: 10,
-      page: 1,
-    }).then(data => {
-      let coins_id = data.data.map( item => {
-        coins = {
-          "name": item.name,
-          "current_price": item.current_price,
-          "imgsrc": item.image,
-        }
-        this.coin_list.push(coins)
+  created() {
+    let coins = {};
+    let c_link = this.coin_list;
+    const axios = require('axios');
+    axios.get('https://api.coingecko.com/api/v3/coins/markets?vs_currency=twd&order=market_cap_desc&per_page=10&page=1&sparkline=false&price_change_percentage=24h')
+      .then(function (response) {
+        response.data.map( item => {
+          coins = {
+            "name": item.name,
+            "current_price": item.current_price,
+            "imgsrc": item.image,
+          }
+          c_link.push(coins);
+        });
       });
-    });
   }
 }
 </script>
