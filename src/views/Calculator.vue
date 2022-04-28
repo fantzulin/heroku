@@ -1,10 +1,14 @@
 <template>
-  <div class="max-w-half mx-auto text-start">
+  <div class="mx-auto text-start">
     <h3>計算 NFT 成本</h3>
     <div>
         <p>Transaction Hash</p>
-        <el-input class="m-2" v-model="transactionHash" placeholder="Transaction Hash" />
-        <el-button v-on:click="getPrice">計算</el-button>
+        <el-input class="mb-2" v-model="transactionHash" placeholder="Transaction Hash" />
+        <p>OpenSea 上架費用</p>
+        <div class="d-flex">
+            <el-input class="me-2" v-model="listPrice" placeholder="請輸入 OpenSea 上架費用" />
+            <el-button v-on:click="getPrice">計算</el-button>
+        </div>
     </div>
     <div>
         <p>Value</p>
@@ -18,34 +22,45 @@
         <p>{{ nftName }} Royalty</p>
         <h5>{{ royaltyPrice }}%</h5>
     </div>
-    <el-row :gutter="20" class="align-items-center">
-      <span>OpenSea 上架費用</span>
-      <el-input class="m-2" v-model="listPrice" placeholder="請輸入 OpenSea 上架費用" />
-    </el-row>
-    
-    <h4>至少需要賣 {{salePrice}} eth</h4>
+    <h4>至少需要賣 {{ salePrice }} eth</h4>
+    <hr>
+    <div class="d-flex">
+        <el-image :src="nftImg" class="nft-img me-2" alt="NFT Icon"></el-image>
+        <el-link :href="nftLink" target="_blank">
+            <span>{{ nftName }}</span>
+        </el-link>
+    </div>
   </div>
 </template>
 
 <style lang="scss">
+.d-flex {
+    display: flex;
+}
+
 .mx-auto {
   margin: 0 auto;
 }
 
-.m-2 {
-  margin: 10px;
+.me-2 {
+    margin-right: 10px;
+}
+
+.mb-2 {
+  margin-bottom: 10px;
 }
 
 .align-items-center {
   align-items: center;
 }
 
-.max-w-half {
-  max-width: 50%;
-}
-
 .text-start {
   text-align: left;
+}
+
+.nft-img {
+    width: 40px;
+    border-radius: 100%;
 }
 
 </style>
@@ -63,7 +78,8 @@ export default {
         value: '',
         transFee: '',
         nftName: '',
-        contract: '',
+        nftImg: '',
+        nftLink: '',
         listPrice: 0,
         royaltyPrice: '',
         salePrice:0,
@@ -85,37 +101,32 @@ export default {
     getPrice(){
         let transactionHash = this.transactionHash;
 
-        let mintValue = provider.getTransaction(transactionHash).then((receipt) => {
-            console.log('getTransaction:', receipt);
+        const getTransaction = provider.getTransaction(transactionHash).then((receipt) => {
+            this.value = Number(ethers.utils.formatEther(receipt.value));
             return Number(ethers.utils.formatEther(receipt.value));
         });
 
-        mintValue.then((successMessage) => {
-            console.log('mintValue success:', successMessage)
-            this.value = successMessage;
-        });
-
-        let transReceipt = provider.getTransactionReceipt(transactionHash).then((receipt) => {
+        const getTransactionReceipt = provider.getTransactionReceipt(transactionHash).then((receipt) => {
             let receiptMsg = {
                 transFee: ethers.utils.formatEther(receipt.gasUsed.mul(receipt.effectiveGasPrice)),
                 contract: receipt.logs[0].address,
             }
+            this.transFee = receiptMsg.transFee;
             return receiptMsg
         });
 
-        transReceipt.then((successMessage) => {
-            let openseaMsg = {};
-            console.log('getTransactionReceipt success:', successMessage)
-            this.transFee = successMessage.transFee;
-            this.contract = successMessage.contract;
-            axios.get('https://api.opensea.io/api/v1/asset_contract/' + successMessage.contract).then((response) => {
-                console.log(response)
-                openseaMsg = {
-                    nftName: response.data.name,
-                    royaltyPrice: math.divide(response.data.seller_fee_basis_points, 100),
-            }
-            this.nftName = openseaMsg.nftName;
-            this.royaltyPrice = openseaMsg.royaltyPrice;
+        Promise.all([getTransaction, getTransactionReceipt]).then(values => {
+            axios.get('https://api.opensea.io/api/v1/asset_contract/' + values[1].contract).then((response) => {
+                this.nftName = response.data.name;
+                this.nftImg = response.data.collection.image_url;
+                this.nftLink = 'https://opensea.io/collection/' + response.data.collection.slug;
+                this.royaltyPrice = math.divide(response.data.seller_fee_basis_points, 100);
+                let x = math.add(values[0], values[1].transFee);
+                let cost = math.add(x, this.listPrice);
+                let royPriceNum = math.divide(response.data.seller_fee_basis_points, 10000);
+                let royPrice = math.add(1, royPriceNum);
+                let y = roundToFour(math.multiply(cost, royPrice));
+                this.salePrice = y;
             });
         });
     },
@@ -133,17 +144,4 @@ function comp(_func, args) {
 function roundToFour(num) {
     return +(Math.round(num + "e+4")  + "e-4");
 }
-
-console.log('roundToFour:', roundToFour)
-
-// let x = math.add(mintValue, this.transFee);
-// console.log('value_2:', this.value);
-// console.log("x:", x)
-// let cost = math.add(x, this.listPrice);
-// console.log("cost:", cost)
-// let royPrice = math.divide(response.data.seller_fee_basis_points, 10000);
-// let royPriceNum = math.add(1, royPrice);
-// console.log("royPrice:", royPrice)
-// let y = roundToFour(math.multiply(cost, royPriceNum));
-// this.salePrice = y;
 </script>
