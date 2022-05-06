@@ -12,9 +12,9 @@
         router="true"
       >
         <el-menu-item index="Home" route="/">Home</el-menu-item>
-        <el-menu-item index="Crypto" route="/Crypto">Crypto Price</el-menu-item>
+        <el-menu-item index="crypto" route="/crypto">Crypto Price</el-menu-item>
         <el-menu-item index="Calculator" route="/Calculator">Calculator</el-menu-item>
-        <el-menu-item index="CharacterCard" route="/CharacterCard">Character Card</el-menu-item>
+        <el-menu-item index="character" route="/character">Character Card</el-menu-item>
         <el-menu-item index="MyTodo" route="/MyTodo">To Do List</el-menu-item>
       </el-menu>
       <div id="mobile_menu" style="display: none;">
@@ -28,13 +28,13 @@
                 <el-link href="/" :underline="false">Home</el-link>
               </el-dropdown-item>
               <el-dropdown-item>
-                <el-link href="/Crypto" :underline="false">Crypto Price</el-link>
+                <el-link href="/crypto" :underline="false">Crypto Price</el-link>
               </el-dropdown-item>
               <el-dropdown-item>
                 <el-link href="/Calculator" :underline="false">Calculator</el-link>
               </el-dropdown-item>
               <el-dropdown-item>
-                <el-link href="/CharacterCard" :underline="false">Character Card</el-link>
+                <el-link href="/character" :underline="false">Character Card</el-link>
               </el-dropdown-item>
               <el-dropdown-item>
                 <el-link href="/MyTodo" :underline="false">To Do List</el-link>

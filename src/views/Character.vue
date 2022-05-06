@@ -28,23 +28,4 @@
 </style>
 
 <script>
-import { createClient } from 'pexels';
-const client = createClient('563492ad6f917000010000012e37dbba6ed644bd89213f4459260996');
-export default {
-  data() {
-    return {
-      character: '',
-      src: require('../assets/logo.png'),
-    }
-  },
-  methods: {
-    showCard(){
-      const query = this.character;
-      client.photos.search({ query, per_page: 1, locale:'zh-TW' }).then(photos => {
-        let photoSrc = photos.photos[0].src.medium;
-        this.src = photoSrc;
-      });
-    }
-  },
-}
 </script>
